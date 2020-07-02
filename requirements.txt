@@ -1,1 +1,3 @@
 git+git://github.com/dmroeder/pylogix#egg=pylogix
+filelock
+mysql-connector-python
