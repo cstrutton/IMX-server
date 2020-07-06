@@ -77,7 +77,8 @@ def loop(taglist, ip, slot=0, minimum_cycle=.5):
 def part_entry(table, timestamp, count, machine, parttype):
     print('{} made a {} ({})'.format(machine, parttype, count))
 
-    file_path = './sql/{}.sql'.format(str(int(timestamp)))
+    file_path = '/home/debian/IMX-server/sql/{}.sql'.format(
+        str(int(timestamp)))
 
     with open(file_path, "a+") as file:
         sql = ('INSERT INTO {} '
