@@ -1,12 +1,6 @@
 from pylogix import PLC
 import time
 import os
-from filelock import FileLock
-
-file_path = "high_ground.txt"
-lock_path = "high_ground.txt.lock"
-
-lock = FileLock(lock_path, timeout=1)
 
 tag_frequency = [
     {'Machine': '1605',
@@ -84,16 +78,13 @@ def part_entry(table, timestamp, count, machine, parttype):
     print('{} made a {} ({})'.format(machine, parttype, count))
 
     file_path = './sql/{}.sql'.format(str(int(timestamp)))
-    lock_path = '{}.{}'.format(file_path, 'lock')
 
-    lock = FileLock(lock_path, timeout=1)
-    with lock:
-        with open(file_path, "a+") as file:
-            sql = ('INSERT INTO {} '
-                   '(Machine, Part, PerpetualCount, Timestamp) '
-                   'VALUES ("{}", "{}" ,{} ,{});\n'.format(
-                       table, machine, parttype, count, timestamp))
-            file.write(sql)
+    with open(file_path, "a+") as file:
+        sql = ('INSERT INTO {} '
+               '(Machine, Part, PerpetualCount, Timestamp) '
+               'VALUES ("{}", "{}" ,{} ,{});\n'.format(
+                   table, machine, parttype, count, timestamp))
+        file.write(sql)
 
 
 def get_tags(tags, ip, slot=0):
