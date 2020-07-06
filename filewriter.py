@@ -13,7 +13,7 @@ config = {
 cnx = mysql.connector.connect
 
 
-def executesql(directory='sql/', config=config):
+def executesql(directory='/home/debian/sql/', config=config):
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
 
