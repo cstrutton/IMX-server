@@ -1,0 +1,10 @@
+[Unit]
+# Human readable name of the unit
+Description=IMX PLC Gateway Post to DB Service
+
+[Service]
+# Command to execute when the service is started
+ExecStart=/home/debian/venv/bin/python /home/debian/IMX-server/filewriter.py
+
+[Install]
+WantedBy=default.target
