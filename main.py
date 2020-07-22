@@ -3,42 +3,74 @@ import time
 import os
 
 tag_frequency = [
-    {'Machine': '1605',
-     'nextread': 0,
-     'lastcount': 0,
-     'frequency': .5,
-     'table': 'GFxPRoduction',
-     'Count_Tag': 'OP30_4_COUNT.SYSTEM[0].GOOD',
-     'Part_Type_Tag': 'ROBOT_R30_4.O.DI37',
-     'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-     },
-    {'Machine': '1606',
-     'frequency': .5,
-     'nextread': 0,
-     'lastcount': 0,
-     'table': 'GFxPRoduction',
-     'Count_Tag': 'OP30_1_COUNT.SYSTEM[0].GOOD',
-     'Part_Type_Tag': 'ROBOT_R30_1.O.DI37',
-     'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-     },
-    {'Machine': '1607',
-     'frequency': .5,
-     'nextread': 0,
-     'lastcount': 0,
-     'table': 'GFxPRoduction',
-     'Count_Tag': 'OP30_2_COUNT.SYSTEM[0].GOOD',
-     'Part_Type_Tag': 'ROBOT_R30_2.O.DI37',
-     'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-     },
-    {'Machine': '1608',
-     'frequency': .5,
-     'nextread': 0,
-     'lastcount': 0,
-     'table': 'GFxPRoduction',
-     'Count_Tag': 'OP30_3_COUNT.SYSTEM[0].GOOD',
-     'Part_Type_Tag': 'ROBOT_R30_3.O.DI37',
-     'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-     }
+    {
+        'type': 'counter',
+        'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
+        'Machine': '1617',
+        'nextread': 0,
+        'lastcount': 0,
+        'lastread': 0,
+        'frequency': .5,
+        'table': 'GFxPRoduction',
+        'Part_Type_Tag': 'Stn010.PartType',
+        'Part_Type_Map': {'0': '50-9641', '1': '50-4865'},
+    }
+]
+
+
+tag_frequency_op30 = [
+    {
+        'type': 'counter',
+        'tag': 'OP30_4_COUNT.SYSTEM[0].GOOD',
+        'Machine': '1605',
+        'nextread': 0,
+        'lastcount': 0,
+        'frequency': .5,
+        'table': 'GFxPRoduction',
+        'Part_Type_Tag': 'ROBOT_R30_4.O.DI37',
+        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
+    },
+    {
+        'type': 'counter',
+        'tag': 'OP30_1_COUNT.SYSTEM[0].GOOD',
+        'Machine': '1606',
+        'frequency': .5,
+        'nextread': 0,
+        'lastcount': 0,
+        'table': 'GFxPRoduction',
+        'Part_Type_Tag': 'ROBOT_R30_1.O.DI37',
+        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
+    },
+    {
+        'type': 'counter',
+        'tag': 'OP30_2_COUNT.SYSTEM[0].GOOD',
+        'Machine': '1607',
+        'frequency': .5,
+        'nextread': 0,
+        'lastcount': 0,
+        'table': 'GFxPRoduction',
+        'Part_Type_Tag': 'ROBOT_R30_2.O.DI37',
+        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
+    },
+    {
+        'type': 'counter',
+        'tag': 'OP30_3_COUNT.SYSTEM[0].GOOD',
+        'Machine': '1608',
+        'frequency': .5,
+        'nextread': 0,
+        'lastcount': 0,
+        'table': 'GFxPRoduction',
+        'Part_Type_Tag': 'ROBOT_R30_3.O.DI37',
+        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
+    },
+    {
+        'type': 'value',
+        'tag': 'OP30_3_COUNT.SYSTEM[0].GOOD',
+        'nextread': 0,
+        'frequency': 5,
+        'table': 'DataTable',
+        'name': 'random value'
+    }
 ]
 
 
@@ -52,32 +84,70 @@ def loop(taglist, ip, slot=0, minimum_cycle=.5):
         comm.ProcessorSlot = slot
 
         for entry in taglist:
+
             # get current timestamp
             now = time.time()
+
+            frequency = entry['frequency']
+
             # make sure we are not polling too fast
-            frequency = minimum_cycle if entry['frequency'] < minimum_cycle else entry['frequency']
+            if frequency < minimum_cycle:
+                frequency = minimum_cycle
 
-            if entry['nextread'] < now:
-                entry['nextread'] = entry['nextread'] + frequency
-                if entry['nextread'] < now:
-                    entry['nextread'] = now + frequency
-                part_count, part_type = comm.Read(
-                    [entry['Count_Tag'], entry['Part_Type_Tag']])
-                if part_count.Value > entry['lastcount']:
-                    entry['lastcount'] = part_count.Value
-                    part_entry(
-                        table=entry['table'],
-                        timestamp=now,
-                        count=part_count.Value,
-                        machine=entry['Machine'],
-                        parttype=entry['Part_Type_Map'][str(part_type.Value)]
-                    )
+            # handle first pass through
+            if entry['nextread'] == 0:
+                entry['nextread'] = now
+
+            if entry['nextread'] > now:
+                continue  # too soon move on
+
+            if entry['type'] == 'counter':
+                print('Read Counter:', entry['Part_Type_Tag'])
+                entry['lastread'] = now
+                read_counter(entry, comm)
+                # set the next read timestamp
+                entry['nextread'] += frequency
+
+            if entry['type'] == 'value':
+                print('Read Value:', entry['tag'])
+                entry['lastread'] = now
+                read_value(entry, comm)
+                # set the next read timestamp
+                entry['nextread'] += frequency
 
 
-def part_entry(table, timestamp, count, machine, parttype):
+def read_value(value_entry, comm):
+    print(time.time(), ':', comm.Read(entry['tag']))
+
+
+def read_counter(counter_entry, comm):
+    # read the tag
+    part_count = comm.Read(counter_entry['tag'])
+    if part_count.Status != 'Success':
+        return
+
+    part_type = comm.Read(counter_entry['Part_Type_Tag'])
+    if part_type.Status != 'Success':
+        return
+
+    if (part_count.Value == 0) or (part_count.Value > counter_entry['lastcount']):
+        # save this reading
+        counter_entry['lastcount'] = part_count.Value
+        # post this reading
+
+        part_count_entry(
+            table=counter_entry['table'],
+            timestamp=counter_entry['lastread'],
+            count=part_count.Value,
+            machine=counter_entry['Machine'],
+            parttype=counter_entry['Part_Type_Map'][str(part_type.Value)]
+        )
+
+
+def part_count_entry(table, timestamp, count, machine, parttype):
     print('{} made a {} ({})'.format(machine, parttype, count))
 
-    file_path = '/home/debian/IMX-server/sql/{}.sql'.format(
+    file_path = 'sql/{}.sql'.format(
         str(int(timestamp)))
 
     with open(file_path, "a+") as file:
@@ -103,4 +173,4 @@ if __name__ == "__main__":
     #     print(r)
 
     while True:
-        loop(tag_frequency, '192.168.1.102')
+        loop(tag_frequency, ip='10.4.42.135', slot=3, minimum_cycle=5)
