@@ -1,6 +1,6 @@
 import glob
 import os
-import sleep from time
+from time import sleep
 
 import mysql.connector
 
@@ -35,4 +35,3 @@ if __name__ == '__main__':
     while True:
         executesql()
         sleep(2)
-       

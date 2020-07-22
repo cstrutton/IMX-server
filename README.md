@@ -15,3 +15,8 @@ pip install -r requirents.txt
 
 Add Service Files
 
+https://www.devdungeon.com/content/creating-systemd-service-files
+
+sudo cp IMX-server.service /ect/systemd/system/IMX-server.service
+sudo cp IMX-server.service /ect/systemd/system/IMX-server.service
+
