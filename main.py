@@ -147,7 +147,7 @@ def read_counter(counter_entry, comm):
 def part_count_entry(table, timestamp, count, machine, parttype):
     # print('{} made a {} ({})'.format(machine, parttype, count))
 
-    file_path = '/var/local/1617sql/{}.sql'.format(
+    file_path = '/var/local/1617SQL/{}.sql'.format(
         str(int(timestamp)))
 
     with open(file_path, "a+") as file:

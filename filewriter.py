@@ -1,5 +1,6 @@
 import glob
 import os
+import sleep from time
 
 import mysql.connector
 
@@ -13,7 +14,7 @@ config = {
 cnx = mysql.connector.connect
 
 
-def executesql(directory='/home/debian/sql/', config=config):
+def executesql(directory='/var/local/1617SQL/', config=config):
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
 
@@ -31,4 +32,7 @@ def executesql(directory='/home/debian/sql/', config=config):
 
 
 if __name__ == '__main__':
-    executesql()
+    while True:
+        executesql()
+        sleep(2)
+       
