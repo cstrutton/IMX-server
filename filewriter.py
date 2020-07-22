@@ -14,7 +14,7 @@ config = {
 cnx = mysql.connector.connect
 
 
-def executesql(directory='/var/local/1617SQL/', config=config):
+def executesql(directory='/var/local/SQL/', config=config):
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
 
