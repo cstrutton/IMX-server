@@ -102,14 +102,14 @@ def loop(taglist, ip, slot=0, minimum_cycle=.5):
                 continue  # too soon move on
 
             if entry['type'] == 'counter':
-                print('Read Counter:', entry['Part_Type_Tag'])
+                # print('Read Counter:', entry['Part_Type_Tag'])
                 entry['lastread'] = now
                 read_counter(entry, comm)
                 # set the next read timestamp
                 entry['nextread'] += frequency
 
             if entry['type'] == 'value':
-                print('Read Value:', entry['tag'])
+                # print('Read Value:', entry['tag'])
                 entry['lastread'] = now
                 read_value(entry, comm)
                 # set the next read timestamp
@@ -173,4 +173,4 @@ if __name__ == "__main__":
     #     print(r)
 
     while True:
-        loop(tag_frequency, ip='10.4.42.135', slot=3, minimum_cycle=5)
+        loop(tag_frequency, ip='10.4.42.135', slot=3, minimum_cycle=.5)
