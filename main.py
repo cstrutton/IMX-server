@@ -2,29 +2,6 @@ from pylogix import PLC
 import time
 import os
 
-tag_list = [
-    {
-        #type = counter|value
-        'type': 'counter',
-        # tag is the PLC tag to read
-        'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
-        # Machine is written into the machine colum on the database
-        'Machine': '1533',
-        # used internally
-        'nextread': 0,
-        'lastcount': 0,
-        'lastread': 0,
-        # how often to try to read the tag in seconds
-        'frequency': .5,
-        # database table to write to
-        'table': 'GFxPRoduction',
-        # tag containing what part type is currently running
-        'Part_Type_Tag': 'Stn010.PartType',
-        # map values in above to a string to write in the part type db colum
-        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'}
-    }
-]
-
 
 tag_frequency_op30 = [
     {
@@ -70,14 +47,6 @@ tag_frequency_op30 = [
         'table': 'GFxPRoduction',
         'Part_Type_Tag': 'ROBOT_R30_3.O.DI37',
         'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-    },
-    {
-        'type': 'value',
-        'tag': 'OP30_3_COUNT.SYSTEM[0].GOOD',
-        'nextread': 0,
-        'frequency': 5,
-        'table': 'DataTable',
-        'name': 'random value'
     }
 ]
 
