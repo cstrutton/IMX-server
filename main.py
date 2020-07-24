@@ -2,18 +2,26 @@ from pylogix import PLC
 import time
 import os
 
-tag_frequency = [
+tag_list = [
     {
+        #type = counter|value
         'type': 'counter',
+        # tag is the PLC tag to read
         'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
+        # Machine is written into the machine colum on the database
         'Machine': '1533',
+        # used internally
         'nextread': 0,
         'lastcount': 0,
         'lastread': 0,
+        # how often to try to read the tag in seconds
         'frequency': .5,
+        # database table to write to
         'table': 'GFxPRoduction',
+        # tag containing what part type is currently running
         'Part_Type_Tag': 'Stn010.PartType',
-        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'},
+        # map values in above to a string to write in the part type db colum
+        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'}
     }
 ]
 
