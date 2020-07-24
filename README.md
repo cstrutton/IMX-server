@@ -20,3 +20,13 @@ https://www.devdungeon.com/content/creating-systemd-service-files
 sudo cp IMX-server.service /ect/systemd/system/IMX-server.service
 sudo cp IMX-server.service /ect/systemd/system/IMX-server.service
 
+
+###### Network Configuration ######
+
+From: https://developer.toradex.com/knowledge-base/ethernet-network-(linux)
+
+Using the interactive mode to configure a static Ethernet address
+
+root@colibri-t30:~# connmanctl
+connmanctl> config ethernet_00142d259a48_cable --ipv4 manual 192.168.10.2 255.255.255.0 192.168.10.1
+connmanctl> exit
