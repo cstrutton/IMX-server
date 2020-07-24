@@ -6,73 +6,16 @@ tag_frequency = [
     {
         'type': 'counter',
         'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
-        'Machine': '1533',
+        'Machine': '1617',
         'nextread': 0,
         'lastcount': 0,
         'lastread': 0,
         'frequency': .5,
         'table': 'GFxPRoduction',
         'Part_Type_Tag': 'Stn010.PartType',
-        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'},
+        'Part_Type_Map': {'0': '50-9641', '1': '50-4865'},
     }
 ]
-
-
-tag_frequency_op30 = [
-    {
-        'type': 'counter',
-        'tag': 'OP30_4_COUNT.SYSTEM[0].GOOD',
-        'Machine': '1605',
-        'nextread': 0,
-        'lastcount': 0,
-        'frequency': .5,
-        'table': 'GFxPRoduction',
-        'Part_Type_Tag': 'ROBOT_R30_4.O.DI37',
-        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-    },
-    {
-        'type': 'counter',
-        'tag': 'OP30_1_COUNT.SYSTEM[0].GOOD',
-        'Machine': '1606',
-        'frequency': .5,
-        'nextread': 0,
-        'lastcount': 0,
-        'table': 'GFxPRoduction',
-        'Part_Type_Tag': 'ROBOT_R30_1.O.DI37',
-        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-    },
-    {
-        'type': 'counter',
-        'tag': 'OP30_2_COUNT.SYSTEM[0].GOOD',
-        'Machine': '1607',
-        'frequency': .5,
-        'nextread': 0,
-        'lastcount': 0,
-        'table': 'GFxPRoduction',
-        'Part_Type_Tag': 'ROBOT_R30_2.O.DI37',
-        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-    },
-    {
-        'type': 'counter',
-        'tag': 'OP30_3_COUNT.SYSTEM[0].GOOD',
-        'Machine': '1608',
-        'frequency': .5,
-        'nextread': 0,
-        'lastcount': 0,
-        'table': 'GFxPRoduction',
-        'Part_Type_Tag': 'ROBOT_R30_3.O.DI37',
-        'Part_Type_Map': {'False': '50-5081', 'True': '50-4865'},
-    },
-    {
-        'type': 'value',
-        'tag': 'OP30_3_COUNT.SYSTEM[0].GOOD',
-        'nextread': 0,
-        'frequency': 5,
-        'table': 'DataTable',
-        'name': 'random value'
-    }
-]
-
 
 lastsqltime = ''
 sqlfileinterval = 2*60
