@@ -6,14 +6,14 @@ tag_list = [
     {
         'type': 'counter',
         'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
-        'Machine': '1617',
+        'Machine': '1533',
         'nextread': 0,
         'lastcount': 0,
         'lastread': 0,
         'frequency': .5,
         'table': 'GFxPRoduction',
         'Part_Type_Tag': 'Stn010.PartType',
-        'Part_Type_Map': {'0': '50-9641', '1': '50-4865'}
+        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'}
     }
 ]
 
