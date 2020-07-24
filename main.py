@@ -2,7 +2,7 @@ from pylogix import PLC
 import time
 import os
 
-tag_frequency = [
+tag_list = [
     {
         'type': 'counter',
         'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
@@ -13,7 +13,7 @@ tag_frequency = [
         'frequency': .5,
         'table': 'GFxPRoduction',
         'Part_Type_Tag': 'Stn010.PartType',
-        'Part_Type_Map': {'0': '50-9641', '1': '50-4865'},
+        'Part_Type_Map': {'0': '50-9641', '1': '50-4865'}
     }
 ]
 
