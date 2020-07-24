@@ -13,7 +13,7 @@ tag_frequency = [
         'frequency': .5,
         'table': 'GFxPRoduction',
         'Part_Type_Tag': 'Stn010.PartType',
-        'Part_Type_Map': {'0': '50-9641', '1': '50-4865'},
+        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'},
     }
 ]
 
@@ -102,7 +102,7 @@ def loop(taglist, ip, slot=0, minimum_cycle=.5):
                 continue  # too soon move on
 
             if entry['type'] == 'counter':
-                # print('Read Counter:', entry['Part_Type_Tag'])
+                # print('Read Counter:', entry['tag'])
                 entry['lastread'] = now
                 read_counter(entry, comm)
                 # set the next read timestamp
@@ -124,6 +124,7 @@ def read_counter(counter_entry, comm):
     # read the tag
     part_count = comm.Read(counter_entry['tag'])
     if part_count.Status != 'Success':
+        print('failed to read ',part_count)
         return
 
     part_type = comm.Read(counter_entry['Part_Type_Tag'])
@@ -145,7 +146,7 @@ def read_counter(counter_entry, comm):
 
 
 def part_count_entry(table, timestamp, count, machine, parttype):
-    # print('{} made a {} ({})'.format(machine, parttype, count))
+    print('{} made a {} ({})'.format(machine, parttype, count))
 
     file_path = '/var/local/SQL/{}.sql'.format(
         str(int(timestamp)))
@@ -173,4 +174,4 @@ if __name__ == "__main__":
     #     print(r)
 
     while True:
-        loop(tag_frequency, ip='10.4.42.135', slot=3, minimum_cycle=.5)
+        loop(tag_frequency, ip='192.168.1.2', slot=3, minimum_cycle=.5)
