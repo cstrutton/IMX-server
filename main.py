@@ -6,7 +6,7 @@ tag_frequency = [
     {
         'type': 'counter',
         'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
-        'Machine': '1617',
+        'Machine': '1533',
         'nextread': 0,
         'lastcount': 0,
         'lastread': 0,
@@ -124,7 +124,7 @@ def read_counter(counter_entry, comm):
     # read the tag
     part_count = comm.Read(counter_entry['tag'])
     if part_count.Status != 'Success':
-        print('failed to read ',part_count)
+        print('failed to read ', part_count)
         return
 
     part_type = comm.Read(counter_entry['Part_Type_Tag'])
