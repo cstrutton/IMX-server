@@ -17,9 +17,6 @@ tag_list = [
     }
 ]
 
-lastsqltime = ''
-sqlfileinterval = 2*60
-
 
 def loop(taglist, ip, slot=0, minimum_cycle=.5):
     with PLC() as comm:
@@ -102,19 +99,7 @@ def part_count_entry(table, timestamp, count, machine, parttype):
         file.write(sql)
 
 
-def get_tags(tags, ip, slot=0):
-
-    with PLC() as comm:
-        comm.IPAddress = ip
-        comm.ProcessorSlot = slot
-        return comm.Read(tags)
-
-
 if __name__ == "__main__":
-
-    # ret = get_tags(taglist, ip='192.168.1.102')
-    # for r in ret:
-    #     print(r)
 
     while True:
         loop(tag_frequency, ip='192.168.1.2', slot=3, minimum_cycle=.5)
