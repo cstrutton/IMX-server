@@ -5,6 +5,8 @@ Description=IMX PLC Gateway config web service
 [Service]
 # Command to execute when the service is started
 ExecStart=/home/debian/venv/bin/python /home/debian/flask-config/main.py
+# Restart=on-failure
+# RestartSec=600s
 
 [Install]
 WantedBy=default.target
