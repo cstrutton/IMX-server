@@ -5,6 +5,8 @@ Description=IMX PLC Gateway Service
 [Service]
 # Command to execute when the service is started
 ExecStart=/home/debian/venv/bin/python /home/debian/IMX-server/main.py
+Restart=on-failure
+RestartSec=60s
 
 [Install]
 WantedBy=default.target
