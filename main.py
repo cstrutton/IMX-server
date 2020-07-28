@@ -133,7 +133,11 @@ def read_counter(counter_entry, comm):
 
     part_type = comm.Read(counter_entry['Part_Type_Tag'])
     if part_type.Status != 'Success':
+        print('failed to read ',  part_type)
         return
+
+    if (part_count.Value == 0) and (counter_entry['lastcount'] == 0):
+        return  # machine count rolled over while not running
 
     if (part_count.Value == 0) or (part_count.Value > counter_entry['lastcount']):
         # save this reading
