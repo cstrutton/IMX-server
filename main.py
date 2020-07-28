@@ -106,4 +106,4 @@ def part_count_entry(table, timestamp, count, machine, parttype):
 if __name__ == "__main__":
 
     while True:
-        loop(tag_frequency, ip='192.168.1.2', slot=3, minimum_cycle=.5)
+        loop(tag_list, ip='192.168.1.2', slot=3, minimum_cycle=.5)
