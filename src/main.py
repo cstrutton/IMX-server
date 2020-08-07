@@ -4,12 +4,12 @@ import os
 
 tag_list = [
     {
-        #type = counter|value
+        # type = counter|value
         'type': 'counter',
         # tag is the PLC tag to read
         'tag': 'Program:Production.ProductionData.DailyCounts.DailyTotal',
         # Machine is written into the machine colum on the database
-        'Machine': '1533',
+        'Machine': '1617',
         # used internally
         'nextread': 0,
         'lastcount': 0,
@@ -21,7 +21,7 @@ tag_list = [
         # tag containing what part type is currently running
         'Part_Type_Tag': 'Stn010.PartType',
         # map values in above to a string to write in the part type db colum
-        'Part_Type_Map': {'0': '50-9341', '1': '50-0455'}
+        'Part_Type_Map': {'0': '50-4865', '1': '50-5081'}
     }
 ]
 
@@ -136,27 +136,31 @@ def read_counter(counter_entry, comm):
         print('failed to read ',  part_type)
         return
 
-    if (part_count.Value == 0) and (counter_entry['lastcount'] == 0):
-        return  # machine count rolled over while not running
-
-    if (part_count.Value == 0) or (part_count.Value > counter_entry['lastcount']):
-        # save this reading
+    if (part_count.Value == 0):
         counter_entry['lastcount'] = part_count.Value
-        # post this reading
+        return  # machine count rolled over or is not running
 
-        part_count_entry(
-            table=counter_entry['table'],
-            timestamp=counter_entry['lastread'],
-            count=part_count.Value,
-            machine=counter_entry['Machine'],
-            parttype=counter_entry['Part_Type_Map'][str(part_type.Value)]
-        )
+    if (counter_entry['lastcount'] == 0):  # first time through...
+        counter_entry['lastcount'] = part_count.Value - 1  # only count 1 part
+
+    if part_count.Value > counter_entry['lastcount']:
+        for entry in range(counter_entry['lastcount']+1, part_count.Value+1):
+            part_count_entry(
+                table=counter_entry['table'],
+                timestamp=counter_entry['lastread'],
+                count=entry,
+                machine=counter_entry['Machine'],
+                parttype=counter_entry['Part_Type_Map'][str(part_type.Value)]
+            )
+        counter_entry['lastcount'] = part_count.Value
 
 
 def part_count_entry(table, timestamp, count, machine, parttype):
     print('{} made a {} ({})'.format(machine, parttype, count))
 
-    file_path = '/var/local/SQL/{}.sql'.format(
+    # file_path = '/var/local/SQL/{}.sql'.format(
+    #     str(int(timestamp)))
+    file_path = './sql/{}.sql'.format(
         str(int(timestamp)))
 
     with open(file_path, "a+") as file:
@@ -170,4 +174,4 @@ def part_count_entry(table, timestamp, count, machine, parttype):
 if __name__ == "__main__":
 
     while True:
-        loop(tag_list, ip='192.168.1.2', slot=3, minimum_cycle=.5)
+        loop(tag_list, ip='10.4.42.135', slot=3, minimum_cycle=.5)
