@@ -20,10 +20,6 @@ class Response():
         self.Status = Status
 
 
-def part_count_entry(table, timestamp, count, machine, parttype):
-    part_count_entry_counter += 1
-
-
 def get_counter_entry():
     return {
         # type = counter|value
